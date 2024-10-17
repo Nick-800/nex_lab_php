@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('password');
             $table->string('location')->nullable();
             $table->string('DOB')->nullable();
-            $table->string('gender');
+            $table->enum('gender',["male","female"]);
+            $table->json('booked_tests')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

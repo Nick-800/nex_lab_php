@@ -41,7 +41,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function Logout(Request $request){
+    public function logout(Request $request){
         auth('api')->logout();
 
         return response()->json(['data' => 'Successfully logged out']);
@@ -50,5 +50,9 @@ class UserController extends Controller
         $user = User::findOrfail(auth('api')->user()->id);
         return response()->json(["the logged in user data"=> $user]);
     }
+    // public function tests(){
+    //     $tests = User::findOrfail(auth('api')->user()->id)->tests;
+    //     return response()->json(["tests"=>$tests]);
+    // }
 
 }
