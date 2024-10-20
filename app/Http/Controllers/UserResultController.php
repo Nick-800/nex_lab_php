@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\UserResult;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 
@@ -17,25 +18,32 @@ class UserResultController extends Controller
 
 
 public function store(Request $request)
-    {
-        // Validate the file
-        $validated = $request->validate([
-            'file' => 'required|file|mimes:pdf|max:2048',
-        ]);
+{
+    // Validate the file and test_id
+    $validated = $request->validate([
+        'file' => 'required|file|mimes:pdf|max:2048',
+        'test_id' => 'required|string',
+    ]);
 
-        // Store the file
-        $filePath = $request->file('file')->store('results', 'public');
+    // Generate a specific filename using test_id and current timestamp
+    $testId = $request->input('test_id');
+    $timestamp = Carbon::now()->setTimezone("Africa/Tripoli")->format("Y-m-d-H-i-s");
+    $filename = "{$testId}_{$timestamp}.pdf";
 
-        // Create a new result record
-        $result = new UserResult([
-            'file_path' => $filePath,
-        ]);
+    // Store the file with the specific name
+    $filePath = $request->file('file')->storeAs('results', $filename, 'public');
 
-        // Save the result record
-        auth('api')->user()->results()->save($result);
+    // Create a new result record
+    $result = new UserResult([
+        'file_path' => $filePath,
+        'test_id' => $testId, // Assuming you have a test_id column in your results table
+    ]);
 
-        return response()->json($result, 201);
-    }
+    // Save the result record
+    auth('api')->user()->results()->save($result);
+
+    return response()->json($result, 201);
+}
 
     public function show($id)
     {
