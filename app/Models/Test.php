@@ -17,7 +17,7 @@ class Test extends Model
         'available_slots',
         'test_code',
         'instructions',
-        'location_id',
+        'icon_id',
         'preparation_required',
         'status',
         'max_bookings_per_slot',

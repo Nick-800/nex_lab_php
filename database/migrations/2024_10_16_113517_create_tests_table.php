@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('available_slots');
             $table->string('test_code')->unique();
             $table->string('instructions');
-            $table->integer('location_id');
+            $table->integer('icon_id');
             $table->string('preparation_required');
             $table->enum('status',["available","not available"]);
             $table->integer('max_bookings_per_slot');
