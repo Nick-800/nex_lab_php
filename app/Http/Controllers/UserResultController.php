@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\Test;
 use Illuminate\Http\Request;
 use App\Models\UserResult;
 use Carbon\Carbon;
@@ -22,13 +23,15 @@ public function store(Request $request)
     // Validate the file and test_id
     $validated = $request->validate([
         'file' => 'required|file|mimes:pdf|max:2048',
-        'test_id' => 'required|string',
+        'test_id' => 'required|exists:tests,id',
     ]);
 
     // Generate a specific filename using test_id and current timestamp
     $testId = $request->input('test_id');
+    $test = Test::findOrFail($testId);
+    $testCode = $test->test_code;
     $timestamp = Carbon::now()->setTimezone("Africa/Tripoli")->format("Y-m-d-H-i-s");
-    $filename = "{$testId}_{$timestamp}.pdf";
+    $filename = "{$testCode}_{$timestamp}.pdf";
 
     // Store the file with the specific name
     $filePath = $request->file('file')->storeAs('results', $filename, 'public');
@@ -36,7 +39,8 @@ public function store(Request $request)
     // Create a new result record
     $result = new UserResult([
         'file_path' => $filePath,
-        'test_id' => $testId, // Assuming you have a test_id column in your results table
+        'test_id' => $testId,
+        'user_id' => auth('api')->id(),
     ]);
 
     // Save the result record

@@ -18,6 +18,12 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->belongsToMany(Test::class, 'user_tests');
     }
+
+    public function results()
+    {
+        return $this->hasMany(UserResult::class);
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();
