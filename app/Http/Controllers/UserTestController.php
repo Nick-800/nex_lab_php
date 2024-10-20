@@ -37,10 +37,7 @@ class UserTestController extends Controller
 
     public function show($id)
     {
-        $userTest =
-        UserTest::where('user_id', auth('api')
-         ->user()->id)
-         ->where('test_id', $id)->first();
+        $userTest = UserTest::where('user_id', auth('api')->user()->id)->where('test_id', $id)->first();
         if (!$userTest) {
             return response()->json(["error" => "Test not found"], 404);
         }

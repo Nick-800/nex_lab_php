@@ -16,7 +16,7 @@ class UserTest extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_tests');
+        return $this->belongsToMany(User::class, 'user_tests');
     }
 
     public function test()
