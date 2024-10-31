@@ -9,8 +9,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::post("register",[UserController::class,"store"]);
 Route::post("login", [UserController::class, "login"]);
+ Route::post("refresh", [UserController::class, "refresh"]);
 
-Route::middleware('auth:api')->group(
+Route::middleware('auth:user')->group(
     function () {
         // User Routes
         Route::post('logout',[UserController::class,'logout'] );
@@ -19,6 +20,8 @@ Route::middleware('auth:api')->group(
         // Test Routes
         Route::post("test/add", [TestController::class, "store"]);
         Route::get("tests", [TestController::class, "index"]);
+        Route::get("tests/available", [TestController::class, "available"]);
+        Route::get("tests/not-available", [TestController::class, "notAvailable"]);
         Route::get("test/{id}", [TestController::class, "show"]);
         Route::put("test/edit",[TestController::class,"update"]);
         Route::delete("test/delete/{id}",[TestController::class,"destroy"]);
@@ -43,4 +46,11 @@ Route::middleware('auth:api')->group(
 
 
     }
+
+);
+
+Route::middleware('auth:admin')->group(
+    function () {
+
+     }
 );

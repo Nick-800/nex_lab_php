@@ -66,12 +66,23 @@ class TestController extends Controller
     }
 
     public function destroy($id){
+
         $test = Test::find($id);
         $test->delete();
         return response()->json(["status" => "success"]);
    }
     public function index(){
         $tests = Test::all();
+        return response()->json(["data" => $tests]);
+    }
+
+    public function available(){
+        $tests = Test::where('status', 'available')->get();
+        return response()->json($tests);
+    }
+
+    public function notAvailable(){
+        $tests = Test::where('status', 'not available')->get();
         return response()->json($tests);
     }
 }

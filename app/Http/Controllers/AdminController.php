@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class AdminController extends Controller
 {
     public function store(Request $request){
         $input=request()->validate([
@@ -31,13 +31,13 @@ class UserController extends Controller
     }
     public function login(Request $request){
         $credentials = request(['email', 'password']);
-        if(!$token = auth('user')->attempt($credentials)){
-            return response()->json(['status'=> 'error'], 401);
+        if(!$token = auth('admin')->attempt($credentials)){
+            return response()->json(['status'=> 'error']);
         }
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth("user")->factory()->getTTL() * 60
+            'expires_in' => auth("admin")->factory()->getTTL() * 60
         ]);
     }
 
@@ -48,15 +48,11 @@ class UserController extends Controller
     }
     public function user(){
         $user = User::findOrfail(auth('user')->user()->id);
-        return response()->json($user);
+        return response()->json(["the logged in user data"=> $user]);
     }
-
-    public function refresh(){
-        return response()->json([
-            'access_token' => auth('user')->refresh( true,true),
-            'token_type' => 'bearer',
-            'expires_in' => auth('user')->factory()->getTTL() * 60
-        ]);
-    }
+    // public function tests(){
+    //     $tests = User::findOrfail(auth('user')->user()->id)->tests;
+    //     return response()->json(["tests"=>$tests]);
+    // }
 
 }

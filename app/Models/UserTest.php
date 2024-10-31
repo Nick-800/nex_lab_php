@@ -12,6 +12,7 @@ class UserTest extends Model
     protected $fillable = [
         'user_id',
         'test_id',
+        'booked_time'
     ];
 
     public function user()
@@ -21,6 +22,6 @@ class UserTest extends Model
 
     public function test()
     {
-        return $this->belongsToMany(Test::class, 'user_tests');
+        return $this->belongsTo(Test::class, 'test_id');
     }
 }

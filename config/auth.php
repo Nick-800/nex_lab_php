@@ -43,6 +43,15 @@ return [
         'api' => [
             'driver' => 'jwt',
             'provider' => 'users',
+        ],
+        'user' => [
+            'driver' => 'jwt',
+            'provider' => 'users',
+
+        ],
+        'admin' => [
+            'driver' => 'jwt',
+            'provider' => 'admin',
 
         ]
     ],
@@ -67,7 +76,11 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
+            'model' =>  App\Models\User::class
+        ],
+        'admin' => [
+            'driver' => 'eloquent',
+            'model' =>  App\Models\Admin::class
         ],
 
         // 'users' => [
