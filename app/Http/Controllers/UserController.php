@@ -59,4 +59,25 @@ class UserController extends Controller
         ]);
     }
 
+    public function update(Request $request, $id){
+        $input = $request->validate([
+            "name" => ["sometimes", "string"],
+            "email" => ["sometimes", "string", "email", 'unique:users,email,' . $id],
+            "password" => ["sometimes", "string"],
+            "phone" => ["sometimes", "string", "min:10", "max:10", 'unique:users,phone,' . $id],
+            "DOB" => ["sometimes", "string"],
+            "gender" => ["sometimes", "string", "in:male,female"],
+            'location' => ['nullable'],
+        ]);
+
+        $user = User::findOrFail($id);
+
+        if (isset($input['password'])) {
+            $input['password'] = Hash::make($input['password']);
+        }
+
+        $user->update($input);
+
+        return response()->json(["status" => "success", "user" => $user]);
+    }
 }

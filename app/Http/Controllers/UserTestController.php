@@ -29,9 +29,11 @@ class UserTestController extends Controller
         return response()->json(["data" => "success"]);
     }
 
-    public function destroy($id)
+        public function destroy($id)
     {
-        $userTest = UserTest::where('user_id', auth('user')->user()->id)->where('test_id', $id)->first();
+        $userTest = UserTest::where('user_id', auth('user')->user()->id)
+        ->where('test_id', $id)->first();
+        
         if (!$userTest) {
             return response()->json(["error" => "Test not found"], 404);
         }
